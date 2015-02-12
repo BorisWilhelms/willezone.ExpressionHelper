@@ -67,7 +67,7 @@ namespace Willezone.ExpressionHelper
         {
             Contract.Requires<NotSupportedException>(expression is MethodCallExpression,
                 "Expression must be of type MethodCallExpression");
-            Contract.Requires<NotSupportedException>(MethodSupported(((MethodCallExpression)expression).Method),
+            Contract.Requires<NotSupportedException>(IsMethodSupported(((MethodCallExpression)expression).Method),
                 "Only Enumerable.Select can be used");
 
             var methodCallExpression = (MethodCallExpression)expression;
@@ -111,7 +111,7 @@ namespace Willezone.ExpressionHelper
         }
 
         [Pure]
-        private static bool MethodSupported(MethodInfo methodInfo)
+        private static bool IsMethodSupported(MethodInfo methodInfo)
         {
             Contract.Requires(methodInfo != null);
 
