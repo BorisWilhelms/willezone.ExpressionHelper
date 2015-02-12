@@ -85,7 +85,7 @@ namespace Willezone.ExpressionHelper
         private static string ParseLambdaExpression(Expression expression)
         {
             Contract.Requires<NotSupportedException>(expression is LambdaExpression,
-                "expression must be of type LambdaExpression");
+                "Expression must be of type LambdaExpression");
 
             var lambdaExpression = (LambdaExpression)expression;
             var parser = GetParser(lambdaExpression.Body.NodeType);
@@ -96,7 +96,7 @@ namespace Willezone.ExpressionHelper
         private static string ParseConvertExpression(Expression expression)
         {
             Contract.Requires<NotSupportedException>(expression is UnaryExpression,
-                "expression must be of type UnaryExpression");
+                "Expression must be of type UnaryExpression");
 
             var unaryExpression = (UnaryExpression)expression;
             var parser = GetParser(unaryExpression.Operand.NodeType);
