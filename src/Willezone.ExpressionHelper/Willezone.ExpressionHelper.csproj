@@ -80,6 +80,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="MemberExpressionParser.cs" />
     <Compile Include="Parsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
