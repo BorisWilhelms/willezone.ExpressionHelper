@@ -11,8 +11,16 @@ namespace willezone.ExpressionHelperTests
         public void CreateMemberAccessShoudlWorkWithFields()
         {
             var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("Field");
-            var testData = new TestClass() {Field = 123};
+            var testData = new TestClass() { Field = 123 };
             exp(testData).Should().Be(123);
+        }
+
+        [TestMethod]
+        public void CreateMemberAccessShoudlWorkWithProperties()
+        {
+            var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("Property");
+            var testData = new TestClass() { Property = "PropertyValue" };
+            exp(testData).Should().Be("PropertyValue");
         }
     }
 }

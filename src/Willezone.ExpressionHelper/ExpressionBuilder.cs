@@ -13,8 +13,11 @@ namespace Willezone.ExpressionHelper
             Contract.Requires<ArgumentException>(!String.IsNullOrWhiteSpace(field), "Field must have a value");
 
             var type = typeof(T);
-            
-            var memberInfo = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetField).FirstOrDefault(m => m.Name == field);
+
+            MemberInfo memberInfo = 
+                type.GetFields(BindingFlags.Public | BindingFlags.Instance).Cast<MemberInfo>()
+                .Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                .FirstOrDefault(m => m.Name == field);
 
             if (memberInfo == null)
             {
