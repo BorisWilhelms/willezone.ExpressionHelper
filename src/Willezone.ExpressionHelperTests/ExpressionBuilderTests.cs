@@ -10,7 +10,6 @@ namespace willezone.ExpressionHelperTests
         [TestMethod]
         public void CreateMemberAccessShoudlWorkWithFields()
         {
-            //This is some test
             var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("Field");
             var testData = new TestClass() { Field = 123 };
             exp(testData).Should().Be(123);
