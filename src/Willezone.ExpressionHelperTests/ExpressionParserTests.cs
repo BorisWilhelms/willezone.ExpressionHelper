@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,29 +9,6 @@ namespace willezone.ExpressionHelperTests
     [TestClass]
     public class ExpressionParserTests
     {
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class TestClass
-        {
-#pragma warning disable 649
-            public int Field;
-#pragma warning restore 649
-
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
-            public string Property { get; set; }
-
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
-            public TestClass SubProperty { get; set; }
-
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
-            public IEnumerable<TestClass> Classes { get; set; }
-
-            // ReSharper disable once MemberCanBeMadeStatic.Local
-            public string Select()
-            {
-                return String.Empty;
-            }
-        }
-
         [TestMethod]
         public void FirstLevelPropertyShouldReturnPropertyName()
         {
