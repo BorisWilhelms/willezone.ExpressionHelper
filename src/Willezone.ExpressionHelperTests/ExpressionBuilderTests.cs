@@ -16,7 +16,7 @@ namespace willezone.ExpressionHelperTests
         }
 
         [TestMethod]
-        public void CreateMemberAccessShoudlWorkWithProperties()
+        public void CreateMemberAccessShouldWorkWithProperties()
         {
             var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("Property");
             var testData = new TestClass() { Property = "PropertyValue" };
