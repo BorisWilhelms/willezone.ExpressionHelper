@@ -8,28 +8,59 @@ namespace Willezone.ExpressionHelper
 {
     public class ExpressionBuilder
     {
-        public static Func<T, object> CreateMemberAccess<T>(string field)
+        public static Func<T, object> CreateMemberAccess<T>(string memberPath)
         {
-            Contract.Requires<ArgumentException>(!String.IsNullOrWhiteSpace(field), "Field must have a value");
+            Contract.Requires<ArgumentException>(!String.IsNullOrWhiteSpace(memberPath), "memberPath must have a value");
+            var memberPathParts = SplitMemberPath(memberPath);
 
-            var type = typeof(T);
+            MemberExpression memberExpression = null;
+            var parameter = Expression.Parameter(typeof(T), "Model");
 
-            MemberInfo memberInfo = 
-                type.GetFields(BindingFlags.Public | BindingFlags.Instance).Cast<MemberInfo>()
-                .Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                .FirstOrDefault(m => m.Name == field);
-
-            if (memberInfo == null)
+            for (int i = 0; i < memberPathParts.Length; i++)
             {
-                throw new MissingMemberException(type.Name, field);
+                if (i == 0)
+                {
+                    var type = typeof(T);
+
+                    MemberInfo memberInfo =
+                        type.GetFields(BindingFlags.Public | BindingFlags.Instance).Cast<MemberInfo>()
+                        .Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                        .FirstOrDefault(m => m.Name == memberPathParts[i]);
+
+                    if (memberInfo == null)
+                    {
+                        throw new MissingMemberException(type.Name, memberPath);
+                    }
+
+                    memberExpression = Expression.MakeMemberAccess(parameter, memberInfo);
+                }
+                else
+                {
+                    var type = memberExpression.Member.DeclaringType;
+
+                    MemberInfo memberInfo =
+                        type.GetFields(BindingFlags.Public | BindingFlags.Instance).Cast<MemberInfo>()
+                        .Concat(type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                        .FirstOrDefault(m => m.Name == memberPathParts[i]);
+
+                    if (memberInfo == null)
+                    {
+                        throw new MissingMemberException(type.Name, memberPath);
+                    }
+
+                    memberExpression = Expression.MakeMemberAccess(memberExpression, memberInfo);
+                }
             }
 
-            var parameter = Expression.Parameter(typeof (T), "Model");
-            var memberExpression = Expression.MakeMemberAccess(parameter, memberInfo);
-            var convertExpression = Expression.Convert(memberExpression, typeof (object));
+            var convertExpression = Expression.Convert(memberExpression, typeof(object));
 
             var lambda = Expression.Lambda<Func<T, object>>(convertExpression, parameter);
             return lambda.Compile();
+        }
+
+        private static string[] SplitMemberPath(string memberPath)
+        {
+            return memberPath.Split('.');
         }
     }
 }
