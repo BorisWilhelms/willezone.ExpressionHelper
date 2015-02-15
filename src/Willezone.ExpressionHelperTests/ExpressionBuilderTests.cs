@@ -24,11 +24,19 @@ namespace willezone.ExpressionHelperTests
         }
 
         [TestMethod]
-        public void CreateMemberAccessShouldWorkWitSubObjects()
+        public void CreateMemberAccessShouldWorkWithSubObjects()
         {
             var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("SubProperty.Property");
             var testData = new TestClass() { SubProperty = new TestClass() { Property ="SubPropertyValue" } };
             exp(testData).Should().Be("SubPropertyValue");
+        }
+
+        [TestMethod]
+        public void CreateMemberAccessShouldWorkWithFieldsOnSubObjects()
+        {
+            var exp = ExpressionBuilder.CreateMemberAccess<TestClass>("SubProperty.Property.Length");
+            var testData = new TestClass() { SubProperty = new TestClass() { Property = "SubPropertyValue" } };
+            exp(testData).Should().Be(16);
         }
     }
 }
